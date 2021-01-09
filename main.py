@@ -6,11 +6,10 @@ import io
 import logging
 from PIL import Image
 from config import __CONFIG__
+import util
 
 import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
-
-API_TOKEN = 'BOT TOKEN HERE'
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -19,6 +18,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=__CONFIG__['token'])
 dp = Dispatcher(bot)
 
+netG = util.load_esr_model('weight/esr.pth')
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
