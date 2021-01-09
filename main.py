@@ -5,8 +5,11 @@ It echoes any incoming text messages.
 import io
 import logging
 from PIL import Image
+from torchvision import transforms
+
 from config import __CONFIG__
 import util
+import torch
 
 import aiohttp
 from aiogram import Bot, Dispatcher, executor, types
@@ -19,6 +22,7 @@ bot = Bot(token=__CONFIG__['token'])
 dp = Dispatcher(bot)
 
 netG = util.load_esr_model('weight/esr.pth')
+netG.eval()
 
 
 @dp.message_handler(commands=['start', 'help'])
@@ -42,11 +46,14 @@ async def handle_docs_photo(message):
     if image.width * image.height > 256 * 256:
         await oom(message)
     else:
+        lr = transforms.ToTensor()(image).unsqueeze(0)
+        fake = netG(lr).clamp_(0.05, 1)
+        image = transforms.ToPILImage(mode='RGB')(fake[0])
         bio = io.BytesIO()
         bio.name = 'image.jpeg'
         image.save(bio, 'JPEG')
         bio.seek(0)
-        await message.reply_photo(bio, caption='Just get your photo back 😺')
+        await message.reply_photo(bio, caption='I did some magic 😺')
 
 
 async def oom(message: types.Message):
