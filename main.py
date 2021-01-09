@@ -20,6 +20,7 @@ dp = Dispatcher(bot)
 
 netG = util.load_esr_model('weight/esr.pth')
 
+
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
     """
@@ -38,7 +39,7 @@ async def handle_docs_photo(message):
             image = Image.open(io.BytesIO(await response.read()))
     print(image)
 
-    if image.width * image.height > 256*256:
+    if image.width * image.height > 256 * 256:
         await oom(message)
     else:
         bio = io.BytesIO()
@@ -52,7 +53,7 @@ async def oom(message: types.Message):
     await message.answer(
         "RAM price is growing day by day. "
         "I am not getting enough funding from my Master to have enough memory to handle such large pictures. "
-        "I could ask you to donate, but my Master forbids me. He says it's indecent. " 
+        "I could ask you to donate, but my Master forbids me. He says it's indecent. "
         "Please choose a picture with less resolution.")
 
 
