@@ -57,6 +57,10 @@ async def handle_docs_photo(message):
 
 
 async def oom(message: types.Message):
+
+    with open('resource/price.jpg', 'rb') as img:
+        await message.reply_photo(img, caption='Well, look at this...')
+
     await message.answer(
         "RAM price is growing day by day. "
         "I am not getting enough funding from my Master to have enough memory to handle such large pictures. "
