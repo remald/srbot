@@ -102,7 +102,7 @@ class ESRGAN(nn.Module):
             Use `num_rrdb_blocks` is 16 for TITAN RTX.
             Use `num_rrdb_blocks` is 23 for Tesla A100.
         """
-        super(Generator, self).__init__()
+        super(ESRGAN, self).__init__()
         num_upsample_block = int(math.log(upscale_factor, 2))
 
         # First layer
