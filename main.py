@@ -79,38 +79,6 @@ async def select_original_model(message: types.Message):
     await message.reply("я знаю! :3\n")
 
 
-# @dp.message_handler(content_types=['photo', 'document'], state='*')
-# async def handle_docs_photo(message, state: FSMContext):
-#
-#     if __LIVE_OPTIONS__.get_selected_model(message.from_user.id) == 'xintao':
-#         netG = model_original
-#     else:
-#         netG = model_self_trained
-#
-#     print(message.from_user)
-#     if message.photo:
-#         link = await message.photo[-1].get_url()
-#     else:
-#         link = await message.document.get_url()
-#     async with aiohttp.ClientSession() as sess:
-#         async with sess.get(link) as response:
-#             image = Image.open(io.BytesIO(await response.read()))
-#     print(image)
-#     image.save("temp/" + f"{message.from_user['username']}_{datetime.now().strftime('%H:%M:%S')}" + ".jpg", "JPEG")
-#
-#     if image.width * image.height > 256 * 256:
-#         await oom(message)
-#         ratio = math.sqrt(image.width * image.height / (256 * 256))
-#         image = image.resize((round(image.width / ratio), round(image.height / ratio)), Image.BICUBIC)
-#         await send_image(message, image, "Downscaled image after bicubic resize (256 * 256 is max supported size)")
-#
-#     await message.reply("Your picture is being processed now! This may take a time depending on the pic size.\n")
-#
-#     lr = transforms.ToTensor()(image).unsqueeze(0)
-#     fake = netG(lr).clamp_(0., 1)
-#     image = transforms.ToPILImage(mode='RGB')(fake[0])
-#     await send_image(message, image, 'I did some magic 😺')
-
 def get_bytearray(img: Image):
     bio = io.BytesIO()
     bio.name = 'image.png'
