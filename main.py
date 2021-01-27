@@ -6,27 +6,18 @@ import asyncio
 import io
 import logging
 import math
-import threading
 from datetime import datetime, timedelta
 
-from aio_pika.patterns import Master
-
-from liveOptions import __LIVE_OPTIONS__
-
-from PIL import Image
-from aiogram.dispatcher import FSMContext
-
-from config import __CONFIG__
-
 import aiohttp
+from PIL import Image
+from aio_pika import connect, Message, IncomingMessage
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.types import ReplyKeyboardRemove, \
-    ReplyKeyboardMarkup, KeyboardButton, \
-    InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.dispatcher import FSMContext
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-from aio_pika import connect, Message, IncomingMessage
+from config import __CONFIG__
+from liveOptions import __LIVE_OPTIONS__
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
