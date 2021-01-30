@@ -14,18 +14,18 @@ class ResidualDenseBlock(nn.Module):
     def __init__(self, in_channels, growth_channels, scale_ratio):
         super(ResidualDenseBlock, self).__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(in_channels + 0 * growth_channels, growth_channels, 3, 1, 1, bias=False),
+            nn.Conv2d(in_channels + 0 * growth_channels, growth_channels, 3, 1, 1),
             nn.LeakyReLU(negative_slope=0.2, inplace=True))
         self.conv2 = nn.Sequential(
-            nn.Conv2d(in_channels + 1 * growth_channels, growth_channels, 3, 1, 1, bias=False),
+            nn.Conv2d(in_channels + 1 * growth_channels, growth_channels, 3, 1, 1),
             nn.LeakyReLU(negative_slope=0.2, inplace=True))
         self.conv3 = nn.Sequential(
-            nn.Conv2d(in_channels + 2 * growth_channels, growth_channels, 3, 1, 1, bias=False),
+            nn.Conv2d(in_channels + 2 * growth_channels, growth_channels, 3, 1, 1),
             nn.LeakyReLU(negative_slope=0.2, inplace=True))
         self.conv4 = nn.Sequential(
-            nn.Conv2d(in_channels + 3 * growth_channels, growth_channels, 3, 1, 1, bias=False),
+            nn.Conv2d(in_channels + 3 * growth_channels, growth_channels, 3, 1, 1),
             nn.LeakyReLU(negative_slope=0.2, inplace=True))
-        self.conv5 = nn.Conv2d(in_channels + 4 * growth_channels, in_channels, 3, 1, 1, bias=False)
+        self.conv5 = nn.Conv2d(in_channels + 4 * growth_channels, in_channels, 3, 1, 1)
 
         self.scale_ratio = scale_ratio
 
@@ -77,7 +77,7 @@ class ESRGAN(nn.Module):
         num_upsample_block = int(math.log(upscale_factor, 2))
 
         # First layer
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1)
 
         # 16/23 ResidualInResidualDenseBlock layer
         rrdb_blocks = []
@@ -86,21 +86,23 @@ class ESRGAN(nn.Module):
         self.Trunk_RRDB = nn.Sequential(*rrdb_blocks)
 
         # Second conv layer post residual blocks
-        self.conv2 = nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1, bias=False)
+        self.conv2 = nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1)
 
         # Upsampling layers
         upsampling = []
         for _ in range(num_upsample_block):
             upsampling += [
                 nn.Upsample(scale_factor=2, mode='nearest'),
-                nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1, bias=False),
+                nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
                 nn.LeakyReLU(negative_slope=0.2, inplace=True),
             ]
         self.upsampling = nn.Sequential(*upsampling)
-
+        self.conv4 = nn.Sequential(
+                nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+                nn.LeakyReLU(negative_slope=0.2, inplace=True))
         # Final output layer
         self.convOut = nn.Sequential(
-            nn.Conv2d(64, 3, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.Conv2d(64, 3, kernel_size=3, stride=1, padding=1),
             #             nn.Tanh()
         )
 
@@ -110,6 +112,7 @@ class ESRGAN(nn.Module):
         out2 = self.conv2(out)
         out = torch.add(out1, out2)
         out = self.upsampling(out)
+        out = self.conv4(out)
         out = self.convOut(out)
 
         return out

@@ -8,7 +8,7 @@ def load_models(device='cpu'):
         torch.load("./weights/RRDB_PSNR_x4.pth", map_location=device))
 
     net2 = ESRGAN().to(device)
-    dump = torch.load("./weights/PSNRV1_1PreTrained.pth", map_location=device)
+    dump = torch.load("./weights/netG_4x_checkpoint.pth", map_location=device)
     net2.load_state_dict(dump['state_dict'])
     print(dump['iteration'])
 
