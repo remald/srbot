@@ -47,9 +47,7 @@ async def send_welcome(message: types.Message):
 
 @dp.message_handler(commands=['help'])
 async def send_welcome(message: types.Message):
-    await message.reply("Supported commands:\n"
-                        "/self_trained_esrgan - deep neural network for image super resolution, trained by me\n"
-                        "/original_esrgan - esrgan pretrained by authors\n")
+    await message.reply( )
 
 
 @dp.message_handler(commands=['self_trained_esrgan'])
@@ -123,11 +121,11 @@ async def send_image(message: types.Message, image: Image, text: str):
 async def oom(message: types.Message):
     td = timedelta(minutes=20)
     user_id = str(message.from_user.id)
-    if user_id in __LIVE_OPTIONS__.oom_message_viewed and \
-            __LIVE_OPTIONS__.oom_message_viewed[user_id] - datetime.now() < td:
+    oom_time = __LIVE_OPTIONS__.get_oom_message_viewed(user_id)
+    if oom_time is not None and oom_time - datetime.now() < td:
         return
 
-    __LIVE_OPTIONS__.oom_message_viewed[user_id] = datetime.now() + td
+    __LIVE_OPTIONS__.set_oom_message_viewed(user_id, datetime.now() + td)
 
     with open('resource/price.jpg', 'rb') as img:
         await message.reply_photo(img, caption='Well, look at this...')
