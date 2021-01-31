@@ -1,7 +1,3 @@
-"""
-This is a echo bot.
-It echoes any incoming text messages.
-"""
 import asyncio
 import io
 import logging
@@ -18,6 +14,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from config import __CONFIG__
 from liveOptions import __LIVE_OPTIONS__
+from lang.translation import translate, set_lang
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -31,40 +28,39 @@ mq_chan = None
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    """
-    This handler will be called when user sends `/start` or `/help` command
-    """
+    set_lang(message)
     button_self_trained = KeyboardButton('/self_trained_esrgan')
     button_xintao = KeyboardButton('/original_esrgan')
 
     greet_kb = ReplyKeyboardMarkup(resize_keyboard=True)
     greet_kb.add(button_self_trained)
     greet_kb.add(button_xintao)
-    await message.reply("Hi!\nI'm a newest AI system!\nI use deep learning to do some magic!"
-                        " Give me a photo and the magic will happen! \nNOTE: max supported pix resolution is 256*256!\n",
+    await message.reply(translate(message.from_user.id)['MESSAGES']['start'],
                         reply_markup=greet_kb)
 
 
 @dp.message_handler(commands=['help'])
-async def send_welcome(message: types.Message):
-    await message.reply( )
+async def send_help(message: types.Message):
+    set_lang(message)
+    await message.reply(translate(message.from_user.id)['MESSAGES']['help'])
 
 
 @dp.message_handler(commands=['self_trained_esrgan'])
 async def select_self_trained_model(message: types.Message):
+    set_lang(message)
     __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'self')
-    await message.reply("Self-trained model is selected!\n")
+    await message.reply(translate(message.from_user.id)["MESSAGES"]["self_selected"])
 
 
 @dp.message_handler(commands=['original_esrgan'])
 async def select_original_model(message: types.Message):
+    set_lang(message)
     __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'xintao')
-    await message.reply("Original model is selected!\n")
+    await message.reply(translate(message.from_user.id)["MESSAGES"]["orig_selected"])
 
 
 @dp.message_handler(regexp='(ты( у меня | и правда | )(умняша|умный))')
 async def select_original_model(message: types.Message):
-    __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'xintao')
     await message.reply("я знаю! :3\n")
 
 
@@ -78,11 +74,12 @@ def get_bytearray(img: Image):
 async def get_result(message: IncomingMessage):
     bio = io.BytesIO(message.body)
     bio.seek(0)
-    await bot.send_photo(message.headers['user_id'], bio, 'I did some magic 😺')
+    await bot.send_photo(message.headers['user_id'], bio, translate(message.headers['user_id'])['MESSAGES']['done'])
 
 
 @dp.message_handler(content_types=['photo', 'document'], state='*')
 async def handle_docs_photo(message, state: FSMContext):
+    set_lang(message)
     print(message.from_user)
     if message.photo:
         link = await message.photo[-1].get_url()
@@ -98,9 +95,9 @@ async def handle_docs_photo(message, state: FSMContext):
         await oom(message)
         ratio = math.sqrt(image.width * image.height / (256 * 256))
         image = image.resize((round(image.width / ratio), round(image.height / ratio)), Image.BICUBIC)
-        await send_image(message, image, "Downscaled image after bicubic resize (256 * 256 is max supported size)")
+        await send_image(message, image, translate(message.from_user.id)['MESSAGES']['downscaled'])
 
-    await message.reply("Your picture is being processed now! This may take a while depending on the pic size.\n")
+    await message.reply(translate(message.from_user.id)['MESSAGES']['wait_task'])
 
     data = get_bytearray(image)
     await mq_chan.default_exchange.publish(
@@ -119,6 +116,7 @@ async def send_image(message: types.Message, image: Image, text: str):
 
 
 async def oom(message: types.Message):
+    set_lang(message)
     td = timedelta(minutes=20)
     user_id = str(message.from_user.id)
     oom_time = __LIVE_OPTIONS__.get_oom_message_viewed(user_id)
@@ -128,21 +126,18 @@ async def oom(message: types.Message):
     __LIVE_OPTIONS__.set_oom_message_viewed(user_id, datetime.now() + td)
 
     with open('resource/price.jpg', 'rb') as img:
-        await message.reply_photo(img, caption='Well, look at this...')
+        await message.reply_photo(img, caption=translate(message.from_user.id)['MESSAGES']['look_at_this'])
 
-    await message.answer(
-        "RAM price is growing day by day. "
-        "I am not getting enough funding from my Master to have enough memory to handle such large pictures. "
-        "I could ask you to donate, but my Master forbids me. He says it's indecent. "
-        "Now I will resize your image to fit 255 * 255 size.")
+    await message.answer(translate(message.from_user.id)['MESSAGES']['ram_price'])
 
 
 @dp.message_handler()
 async def misunderstood(message: types.Message):
+    set_lang(message)
     # old style:
     # await bot.send_message(message.chat.id, message.text)
 
-    await message.answer("You told me something weired")
+    await message.answer(translate(message.from_user.id)['MESSAGES']['misunderstood'])
 
 
 async def mq_thread(loop):
