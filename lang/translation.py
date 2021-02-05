@@ -14,5 +14,8 @@ def translate(client_id):
 
 
 def set_lang(message):
-    print(message.from_user.locale.language)
-    liveOptions.__LIVE_OPTIONS__.set_lang(message.from_user.id, message.from_user.locale.language)
+    try:
+        print(message.from_user.locale.language)
+        liveOptions.__LIVE_OPTIONS__.set_lang(message.from_user.id, message.from_user.locale.language)
+    except Exception:
+        liveOptions.__LIVE_OPTIONS__.set_lang('en')

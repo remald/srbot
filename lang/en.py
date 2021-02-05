@@ -33,6 +33,11 @@ translation = {
         "ram_price": "RAM price is growing day by day. "
         "I am not getting enough funding from my Master to have enough memory to handle such large pictures. "
         "I could ask you to donate, but my Master forbids me. He says it's indecent. "
-        "Now I will resize your image to fit 256 * 256 size."
+        "Now I will resize your image to fit 256 * 256 size.",
+
+        "send_as_doc": "WARNING! You sent the image as a photo. It's not recommended, because telegram compresses it. "
+                       "Please send as a document, to achieve the best performance.",
+
+        "uncompressed": "Uncompressed document",
     }
 }
