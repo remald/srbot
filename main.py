@@ -2,6 +2,7 @@ import asyncio
 import io
 import logging
 import math
+import signal
 from copy import copy
 from datetime import datetime, timedelta
 
@@ -141,7 +142,7 @@ async def misunderstood(message: types.Message):
     await message.answer(translate(message.from_user.id)['MESSAGES']['misunderstood'])
 
 
-async def mq_thread(loop):
+async def run_mq(loop):
     global mq_chan
 
     mq_conn = await connect(
@@ -158,6 +159,5 @@ async def mq_thread(loop):
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(mq_thread(loop))
+    loop.run_until_complete(run_mq(loop))
     executor.start_polling(dp, skip_updates=True, loop=loop)
-    loop.run_forever()
