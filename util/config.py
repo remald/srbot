@@ -8,4 +8,4 @@ def load_configuration(file):
     return json.loads(config_content)
 
 
-__CONFIG__ = load_configuration('../config.json')
+__CONFIG__ = load_configuration('config.json')

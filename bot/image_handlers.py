@@ -7,11 +7,11 @@ from PIL import Image
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
-from bot import bot, dp
+from bot.bot import bot, dp
 from lang.translation import translate, set_lang
 import io
 from util.liveOptions import __LIVE_OPTIONS__
-from util.mq import publish_bytes
+from util import mq
 
 
 async def send_bytes(user_id, bio):
@@ -49,7 +49,7 @@ async def handle_docs_photo(message, state: FSMContext):
     await message.reply(translate(message.from_user.id)['MESSAGES']['wait_task'])
 
     data = get_bytearray(image)
-    await publish_bytes(data, message.from_user.id, __LIVE_OPTIONS__.get_selected_model(message.from_user.id))
+    await mq.publish_bytes(data, message.from_user.id, __LIVE_OPTIONS__.get_selected_model(message.from_user.id))
 
 
 async def send_image(message: Message, image: Image, text: str):

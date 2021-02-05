@@ -1,9 +1,8 @@
 import io
 
-from aio_pika import IncomingMessage, connect
-from telegram import Message
+from aio_pika import IncomingMessage, connect, Message
 
-from bot.image_handlers import send_bytes
+from bot import image_handlers
 from lang.translation import translate
 from util.config import __CONFIG__
 from util.liveOptions import __LIVE_OPTIONS__
@@ -15,7 +14,7 @@ async def get_result(message: IncomingMessage):
     bio = io.BytesIO(message.body)
     bio.seek(0)
     bio.name = 'uncompressed.png'
-    await send_bytes(message.headers['user_id'], bio)
+    await image_handlers.send_bytes(message.headers['user_id'], bio)
 
 
 async def publish_bytes(data, user_id, model):

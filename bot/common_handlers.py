@@ -9,11 +9,11 @@ from util.liveOptions import __LIVE_OPTIONS__
 async def send_welcome(message: Message):
     set_lang(message)
     button_self_trained = KeyboardButton('/self_trained_esrgan')
-    button_xintao = KeyboardButton('/original_esrgan')
+    button_original = KeyboardButton('/original_esrgan')
 
     greet_kb = ReplyKeyboardMarkup(resize_keyboard=True)
     greet_kb.add(button_self_trained)
-    greet_kb.add(button_xintao)
+    greet_kb.add(button_original)
     await message.reply(translate(message.from_user.id)['MESSAGES']['start'],
                         reply_markup=greet_kb)
 
@@ -34,7 +34,7 @@ async def select_self_trained_model(message: Message):
 @dp.message_handler(commands=['original_esrgan'])
 async def select_original_model(message: Message):
     set_lang(message)
-    __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'xintao')
+    __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'original')
     await message.reply(translate(message.from_user.id)["MESSAGES"]["orig_selected"])
 
 
