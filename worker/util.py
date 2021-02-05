@@ -5,7 +5,7 @@ import torch
 def load_models(device='cpu'):
     net1 = RRDBNet(3, 3, 64, 23, gc=32).to(device)
     net1.load_state_dict(
-        torch.load("./weights/RRDB_PSNR_x4.pth", map_location=device))
+        torch.load("./weights/esr1.pth", map_location=device))
 
     net2 = ESRGAN().to(device)
     dump = torch.load("./weights/netG_4x_checkpoint.pth", map_location=device)

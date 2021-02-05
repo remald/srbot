@@ -17,8 +17,8 @@ channel = None
 
 def get_bytearray(img: Image):
     bio = io.BytesIO()
-    bio.name = 'image.jpeg'
-    img.save(bio, 'JPEG')
+    bio.name = 'image.png'
+    img.save(bio, 'PNG')
     return bio.getvalue()
 
 
