@@ -1,8 +1,3 @@
-class CommonOptions:
-    def __init__(self):
-        self.oom_message_viewed = 0
-        self.selected_model = 'st'
-
 
 class LiveOptions:
     def __init__(self):
