@@ -5,8 +5,8 @@ from PIL import Image
 from aio_pika import connect, IncomingMessage, Message
 
 from torchvision import transforms
-import util
-import torch
+import model.util as util
+from util.config import __CONFIG__
 
 model_original, model_self_trained = util.load_models()
 model_original.eval()
@@ -43,7 +43,7 @@ async def main(loop):
     global channel
     # Perform connection
     connection = await connect(
-        "amqp://guest:guest@localhost/", loop=loop
+        f"amqp://{__CONFIG__['mq_addr']}/", loop=loop
     )
 
     # Creating a channel

@@ -2,7 +2,6 @@ import asyncio
 import io
 import logging
 import math
-import signal
 from copy import copy
 from datetime import datetime, timedelta
 
@@ -14,8 +13,8 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-from config import __CONFIG__
-from liveOptions import __LIVE_OPTIONS__
+from util.config import __CONFIG__
+from util.liveOptions import __LIVE_OPTIONS__
 from lang.translation import translate, set_lang
 
 # Configure logging
@@ -146,7 +145,7 @@ async def run_mq(loop):
     global mq_chan
 
     mq_conn = await connect(
-        "amqp://guest:guest@localhost/", loop=loop
+        f"amqp://{__CONFIG__['mq_addr']}/", loop=loop
     )
     # Creating a channel
     mq_chan = await mq_conn.channel()

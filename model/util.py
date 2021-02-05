@@ -1,4 +1,4 @@
-from model import RRDBNet, ESRGAN
+from .model import RRDBNet, ESRGAN
 import torch
 
 

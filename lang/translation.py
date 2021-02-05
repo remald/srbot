@@ -1,6 +1,6 @@
 import lang.en as en
 import lang.ru as ru
-import liveOptions
+from util import liveOptions
 
 
 def translate(client_id):
