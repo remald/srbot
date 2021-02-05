@@ -6,6 +6,7 @@ from aio_pika import connect, IncomingMessage, Message
 
 from torchvision import transforms
 import model.util as util
+from bot.image_handlers import get_bytearray
 from util.config import __CONFIG__
 
 model_original, model_self_trained = util.load_models()
@@ -13,13 +14,6 @@ model_original.eval()
 model_self_trained.eval()
 
 channel = None
-
-
-def get_bytearray(img: Image):
-    bio = io.BytesIO()
-    bio.name = 'image.png'
-    img.save(bio, 'PNG')
-    return bio.getvalue()
 
 
 async def on_message(message: IncomingMessage):
