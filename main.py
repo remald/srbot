@@ -2,6 +2,7 @@ import asyncio
 import io
 import logging
 import math
+from copy import copy
 from datetime import datetime, timedelta
 
 import aiohttp
@@ -60,7 +61,7 @@ async def select_original_model(message: types.Message):
 
 
 @dp.message_handler(regexp='(ты( у меня | и правда | )(умняша|умный))')
-async def select_original_model(message: types.Message):
+async def ama_smart_and_i_know_it(message: types.Message):
     await message.reply("я знаю! :3\n")
 
 
@@ -74,7 +75,9 @@ def get_bytearray(img: Image):
 async def get_result(message: IncomingMessage):
     bio = io.BytesIO(message.body)
     bio.seek(0)
-    await bot.send_photo(message.headers['user_id'], bio, translate(message.headers['user_id'])['MESSAGES']['done'])
+    bio.name = 'uncompressed.png'
+    await bot.send_document(message.headers['user_id'], bio,
+                            caption=translate(message.headers['user_id'])['MESSAGES']['done'])
 
 
 @dp.message_handler(content_types=['photo', 'document'], state='*')
@@ -83,18 +86,18 @@ async def handle_docs_photo(message, state: FSMContext):
     print(message.from_user)
     if message.photo:
         link = await message.photo[-1].get_url()
+        await message.answer(translate(message.from_user.id)['MESSAGES']['send_as_doc'])
     else:
         link = await message.document.get_url()
     async with aiohttp.ClientSession() as sess:
         async with sess.get(link) as response:
             image = Image.open(io.BytesIO(await response.read()))
-    print(image)
     image.save("temp/" + f"{message.from_user['username']}_{datetime.now().strftime('%H:%M:%S')}" + ".jpg", "JPEG")
 
     if image.width * image.height > 256 * 256:
         await oom(message)
         ratio = math.sqrt(image.width * image.height / (256 * 256))
-        image = image.resize((round(image.width / ratio), round(image.height / ratio)), Image.BICUBIC)
+        image = image.resize((round(image.width / ratio) - 1, round(image.height / ratio) - 1), Image.BICUBIC)
         await send_image(message, image, translate(message.from_user.id)['MESSAGES']['downscaled'])
 
     await message.reply(translate(message.from_user.id)['MESSAGES']['wait_task'])
@@ -109,14 +112,14 @@ async def handle_docs_photo(message, state: FSMContext):
 
 async def send_image(message: types.Message, image: Image, text: str):
     bio = io.BytesIO()
-    bio.name = 'image.jpeg'
-    image.save(bio, 'JPEG')
+    bio.name = 'image.png'
+    image.save(bio, 'PNG')
     bio.seek(0)
-    await message.reply_photo(bio, caption=text)
+    await message.reply_document(copy(bio), caption=text)
+    # await message.reply_photo(bio, caption=text)
 
 
 async def oom(message: types.Message):
-    set_lang(message)
     td = timedelta(minutes=20)
     user_id = str(message.from_user.id)
     oom_time = __LIVE_OPTIONS__.get_oom_message_viewed(user_id)
@@ -134,8 +137,6 @@ async def oom(message: types.Message):
 @dp.message_handler()
 async def misunderstood(message: types.Message):
     set_lang(message)
-    # old style:
-    # await bot.send_message(message.chat.id, message.text)
 
     await message.answer(translate(message.from_user.id)['MESSAGES']['misunderstood'])
 
