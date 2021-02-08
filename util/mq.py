@@ -3,7 +3,6 @@ import io
 from aio_pika import IncomingMessage, connect, Message
 
 from bot import image_handlers
-from lang.translation import translate
 from util.config import __CONFIG__
 from util.liveOptions import __LIVE_OPTIONS__
 

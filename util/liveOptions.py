@@ -21,7 +21,7 @@ class LiveOptions:
         self.__get_client_dict_by_id(client_id)['model'] = model
 
     def set_lang(self, client_id, lang):
-        self.__get_client_dict_by_id(client_id)['lang'] = lang
+        self.__get_client_dict_by_id(client_id)['messages'] = lang
 
     def get_oom_message_viewed(self, client_id):
         return self.__get_param_by_id(client_id, 'oom_time')
@@ -30,7 +30,7 @@ class LiveOptions:
         return self.__get_param_by_id(client_id, 'model')
 
     def get_lang(self, client_id):
-        lang = self.__get_param_by_id(client_id, 'lang')
+        lang = self.__get_param_by_id(client_id, 'messages')
         return lang if lang is not None else 'en'
 
 

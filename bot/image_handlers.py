@@ -7,8 +7,7 @@ from PIL import Image
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 
-from bot.bot import bot, dp
-from lang.translation import translate, set_lang
+from bot.bot import bot, dp, TR
 import io
 from util.liveOptions import __LIVE_OPTIONS__
 from util import mq
@@ -16,7 +15,7 @@ from util import mq
 
 async def send_bytes(user_id, bio):
     await bot.send_document(user_id, bio,
-                            caption=translate(user_id)['MESSAGES']['done'])
+                            caption=TR("done"))
 
 
 def get_bytearray(img: Image):
@@ -28,11 +27,10 @@ def get_bytearray(img: Image):
 
 @dp.message_handler(content_types=['photo', 'document'], state='*')
 async def handle_docs_photo(message, state: FSMContext):
-    set_lang(message)
     print(message.from_user)
     if message.photo:
         link = await message.photo[-1].get_url()
-        await message.answer(translate(message.from_user.id)['MESSAGES']['send_as_doc'])
+        await message.answer(TR("send_as_doc"))
     else:
         link = await message.document.get_url()
     async with aiohttp.ClientSession() as sess:
@@ -44,9 +42,9 @@ async def handle_docs_photo(message, state: FSMContext):
         await oom(message)
         ratio = math.sqrt(image.width * image.height / (256 * 256))
         image = image.resize((round(image.width / ratio) - 1, round(image.height / ratio) - 1), Image.BICUBIC)
-        await send_image(message, image, translate(message.from_user.id)['MESSAGES']['downscaled'])
+        await send_image(message, image, TR("downscaled"))
 
-    await message.reply(translate(message.from_user.id)['MESSAGES']['wait_task'])
+    await message.reply(TR("wait_task"))
 
     data = get_bytearray(image)
     await mq.publish_bytes(data, message.from_user.id, __LIVE_OPTIONS__.get_selected_model(message.from_user.id))
@@ -71,6 +69,6 @@ async def oom(message: Message):
     __LIVE_OPTIONS__.set_oom_message_viewed(user_id, datetime.now() + td)
 
     with open('resource/price.jpg', 'rb') as img:
-        await message.reply_photo(img, caption=translate(message.from_user.id)['MESSAGES']['look_at_this'])
+        await message.reply_photo(img, caption=TR("look_at_this"))
 
-    await message.answer(translate(message.from_user.id)['MESSAGES']['ram_price'])
+    await message.answer(TR("ram_price"))

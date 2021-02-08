@@ -17,7 +17,7 @@ channel = None
 
 
 async def on_message(message: IncomingMessage):
-    if message.headers['model'] == 'xintao':
+    if message.headers['model'] == 'original':
         netG = model_original
     else:
         netG = model_self_trained
