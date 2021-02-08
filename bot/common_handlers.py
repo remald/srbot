@@ -1,7 +1,7 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, Message
 
 from bot.bot import dp, TR
-from util.liveOptions import __LIVE_OPTIONS__
+from util.live_options import __LIVE_OPTIONS__
 
 
 @dp.message_handler(commands=['start'])

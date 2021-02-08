@@ -9,7 +9,7 @@ from aiogram.types import Message
 
 from bot.bot import bot, dp, TR
 import io
-from util.liveOptions import __LIVE_OPTIONS__
+from util.live_options import __LIVE_OPTIONS__
 from util import mq
 
 
