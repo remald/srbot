@@ -35,8 +35,8 @@ async def handle_docs_photo(message, state: FSMContext):
         link = await message.document.get_url()
     async with aiohttp.ClientSession() as sess:
         async with sess.get(link) as response:
-            image = Image.open(io.BytesIO(await response.read()))
-    image.save("temp/" + f"{message.from_user['username']}_{datetime.now().strftime('%H:%M:%S')}" + ".jpg", "JPEG")
+            image = Image.open(io.BytesIO(await response.read())).convert("RGB")
+    image.save("temp/" + f"{message.from_user['username']}_{datetime.now().strftime('%H:%M:%S')}" + ".png", "PNG")
 
     if image.width * image.height > 256 * 256:
         await oom(message)
