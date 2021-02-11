@@ -15,7 +15,7 @@ from util import mq
 
 async def send_bytes(user_id, bio):
     await bot.send_document(user_id, bio,
-                            caption=TR("done"))
+                            caption=TR.translate("done", ))
 
 
 def get_bytearray(img: Image):
@@ -30,7 +30,7 @@ async def handle_docs_photo(message, state: FSMContext):
     print(message.from_user)
     if message.photo:
         link = await message.photo[-1].get_url()
-        await message.answer(TR("send_as_doc"))
+        await message.answer(TR("send_as_doc"), parse_mode='html')
     else:
         link = await message.document.get_url()
     async with aiohttp.ClientSession() as sess:
@@ -44,7 +44,7 @@ async def handle_docs_photo(message, state: FSMContext):
         image = image.resize((round(image.width / ratio) - 1, round(image.height / ratio) - 1), Image.BICUBIC)
         await send_image(message, image, TR("downscaled"))
 
-    await message.reply(TR("wait_task"))
+    await message.reply(TR("wait_task"), parse_mode='html')
 
     data = get_bytearray(image)
     await mq.publish_bytes(data, message.from_user.id, __LIVE_OPTIONS__.get_selected_model(message.from_user.id))

@@ -40,5 +40,4 @@ async def ama_smart_and_i_know_it(message: Message):
 
 @dp.message_handler()
 async def misunderstood(message: Message):
-    set_lang(message)
     await message.answer(TR("misunderstood"))
