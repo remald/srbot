@@ -15,7 +15,7 @@ from util import mq
 
 async def send_bytes(user_id, bio):
     await bot.send_document(user_id, bio,
-                            caption=TR.translate("done", ))
+                            caption=TR("done"))
 
 
 def get_bytearray(img: Image):

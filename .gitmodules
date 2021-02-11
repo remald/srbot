@@ -1,0 +1,3 @@
+[submodule "model/ESRGAN"]
+	path = model/ESRGAN
+	url = https://github.com/xinntao/ESRGAN
