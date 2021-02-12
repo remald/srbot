@@ -2,11 +2,7 @@ import math
 
 import torch
 import torch.nn as nn
-
 from torch import Tensor
-
-import functools
-import torch.nn.functional as F
 
 
 class ResidualDenseBlock(nn.Module):

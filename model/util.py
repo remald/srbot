@@ -1,5 +1,5 @@
 from .model import ESRGAN
-from .ESRGAN.RRDBNet_arch import RRDBNet
+from model.original.ESRGAN.RRDBNet_arch import RRDBNet
 import torch
 
 
