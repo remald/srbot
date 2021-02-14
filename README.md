@@ -31,44 +31,44 @@ but you can try) with RubbitMQ and Python3.6+ installed.
 
 ### 1) Prepare Rabbit MQ
    
-sudo apt update 
+`sudo apt update`
    
-sudo apt install rabbitmq-server
+`sudo apt install rabbitmq-server`
    
-systemctl start rabbitmq-server
+`systemctl start rabbitmq-server`
    
 Check if the server is running:
 
-systemctl status rabbitmq-server
+`systemctl status rabbitmq-server`
 
 ### 2) Clone the project
 
-git clone https://bitbucket.org/remald/srbot/
+`git clone https://bitbucket.org/remald/srbot/`
 
-cd srbot
+`cd srbot`
 
 ### 3) Create config file:
 
-touch config.json
+`touch config.json`
 
 Open it in your favorite editor and place there a telgram token and rabbutmq credentials:
 
-{
+`{
   "token" : "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "mq_addr": "mquser:mqpassword@mqhost"
-}
+}`
 
 ### 4) install python dependencies:
 
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 ### 5) On the API server, run master:
 
-python3 main.py
+`python3 main.py`
    
 ### 6) On the every worker machine, run workers:
 
-python3 worker.py
+`python3 worker.py`
 
 # III. Credits
 
