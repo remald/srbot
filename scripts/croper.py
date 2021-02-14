@@ -7,6 +7,10 @@ from PIL import Image
 PATCH_SIZE = 128
 
 
+def clamp(x: int, lower_end, higher_end):
+    return max(min(x, higher_end), lower_end)
+
+
 def crop(img: Image) -> [Image]:
     patches = []
     width, height = img.size
@@ -15,9 +19,9 @@ def crop(img: Image) -> [Image]:
     patch_height = PATCH_SIZE
 
     padded_width = width - PATCH_SIZE
-    padded_width = max(min(padded_width, PATCH_SIZE), 0)  # clamp
+    padded_width = clamp(padded_width, 0, width)
     padded_height = height - PATCH_SIZE
-    padded_height = max(min(padded_height, PATCH_SIZE), 0)  # clamp
+    padded_height = clamp(padded_height, 0, width)
 
     horisontal_step_count = padded_width // PATCH_SIZE + 1
     vertical_step_count = padded_height // PATCH_SIZE + 1

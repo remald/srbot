@@ -27,7 +27,6 @@ def get_bytearray(img: Image):
 
 @dp.message_handler(content_types=['photo', 'document'], state='*')
 async def handle_docs_photo(message, state: FSMContext):
-    print(message.from_user)
     if message.photo:
         link = await message.photo[-1].get_url()
         await message.answer(TR("send_as_doc"), parse_mode='html')
@@ -36,7 +35,6 @@ async def handle_docs_photo(message, state: FSMContext):
     async with aiohttp.ClientSession() as sess:
         async with sess.get(link) as response:
             image = Image.open(io.BytesIO(await response.read())).convert("RGB")
-    image.save("temp/" + f"{message.from_user['username']}_{datetime.now().strftime('%H:%M:%S')}" + ".png", "PNG")
 
     if image.width * image.height > 256 * 256:
         await oom(message)
