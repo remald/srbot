@@ -1,4 +1,5 @@
 
+
 class LiveOptions:
     def __init__(self):
         self.memory_storage = dict()
