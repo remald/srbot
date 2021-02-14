@@ -4,7 +4,7 @@ Made for Deep Learning School: https://www.dlschool.org/ as a final project for 
 The software is distributed under the Apache-V2 license, on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-I. Neural Network
+# I. Neural Network
 
 Neural network for picture super resolution  is ESRGAN.
 
@@ -16,20 +16,20 @@ I just propose a dataset filtering method, based on the picture gradient thresho
 to train a network to make a bit more detailed images, when it used on pictures, containing grass, sand or other 
 fine textures.
 
-II. BOT
+# II. Bot
 
 The bot is asynchronous, uses rabbitmq queue and can be scaled for many worker machines, connected by a network.
 
-Requirements:
+## Requirements:
 
 ESRGAN is a large network and needs a lot of resources. 
 You need at least 16 Gb of memory for the inference on 256*256 pictures.
 You need a linux machine (The code was not tested on windows or other systems,
 but you can try) with RubbitMQ and Python3.6+ installed.
 
-Running the bot on the example of Ubuntu 20.04:
+## Running the bot on the example of Ubuntu 20.04:
 
-1) Prepare Rabbit MQ
+### 1) Prepare Rabbit MQ
    
 sudo apt update 
    
@@ -41,13 +41,13 @@ Check if the server is running:
 
 systemctl status rabbitmq-server
 
-2) Clone the project
+### 2) Clone the project
 
 git clone https://bitbucket.org/remald/srbot/
 
 cd srbot
 
-3) Create config file:
+### 3) Create config file:
 
 touch config.json
 
@@ -58,15 +58,19 @@ Open it in your favorite editor and place there a telgram token and rabbutmq cre
   "mq_addr": "mquser:mqpassword@mqhost"
 }
 
-4) On the API server, run master:
+### 4) install python dependencies:
+
+pip install -r requirements.txt
+
+### 5) On the API server, run master:
 
 python3 main.py
    
-5) On the every worker machine, run workers:
+### 6) On the every worker machine, run workers:
 
 python3 worker.py
 
-III. Credits
+# III. Credits
 
 ESRGAN: Enhanced Super-Resolution Generative Adversarial Networks
 Xintao Wang, Ke Yu, Shixiang Wu, Jinjin Gu, Yihao Liu, Chao Dong, Chen Change Loy, Yu Qiao, Xiaoou Tang
