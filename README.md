@@ -6,7 +6,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 # I. Neural Network
 
-Neural network for picture super resolution  is ESRGAN.
+Neural network used for picture super resolution  is ESRGAN.
 
 You can see training pipeline in collab notebook, which is located in the notebook directory.
 
