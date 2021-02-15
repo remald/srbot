@@ -37,7 +37,7 @@ but you can try) with RubbitMQ and Python3.6+ installed.
    
 `systemctl start rabbitmq-server`
 
-Then you need to configure user and password for MQ or you can you guest user locally
+Then you need to configure user and password for MQ or you can use guest user locally
    
 Check if the server is running:
 
