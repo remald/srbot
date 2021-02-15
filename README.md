@@ -36,6 +36,8 @@ but you can try) with RubbitMQ and Python3.6+ installed.
 `sudo apt install rabbitmq-server`
    
 `systemctl start rabbitmq-server`
+
+Then you need to configure user and password for MQ or you can you guest user locally
    
 Check if the server is running:
 
@@ -43,7 +45,7 @@ Check if the server is running:
 
 ### 2) Clone the project
 
-`git clone https://bitbucket.org/remald/srbot/`
+`git clone https://bitbucket.org/remald/srbot/ --recursive`
 
 `cd srbot`
 
@@ -60,7 +62,7 @@ Open it in your favorite editor and place there a telgram token and rabbutmq cre
 
 ### 4) install python dependencies:
 
-`pip install -r requirements.txt`
+`pip install -r requirements.txt --user`
 
 ### 5) On the API server, run master:
 
