@@ -34,6 +34,9 @@ msgstr "Original model is selected!\n"
 msgid "self_selected"
 msgstr "Self-trained model is selected!\n"
 
+msgid "face_selected"
+msgstr "Face enhance model is selected!\n"
+
 msgid "wait_task"
 msgstr "Your picture is being processed now! This may take a while depending on the pic size.\n"
 
