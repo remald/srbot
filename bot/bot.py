@@ -16,7 +16,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 I18N_DOMAIN = 'srbot'
 LOCALES_DIR = 'i18n/locales'
 
-i18n = SrbotLocale(I18N_DOMAIN, LOCALES_DIR, default='en')
+i18n = SrbotLocale(I18N_DOMAIN, LOCALES_DIR, default='ru')
 TR = i18n.gettext
 dp.middleware.setup(i18n)
 

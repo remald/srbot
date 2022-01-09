@@ -10,16 +10,20 @@ import model.util as util
 from bot.image_handlers import get_bytearray
 from util.config import __CONFIG__
 
-model_original, model_self_trained = util.load_models()
+model_original, model_self_trained, model_antiblur = util.load_models()
 model_original.eval()
 model_self_trained.eval()
+model_antiblur.eval()
 
 channel = None
 
 
 async def on_message(message: IncomingMessage):
+    netG = None
     if message.headers['model'] == 'original':
         netG = model_original
+    elif message.headers['model'] == 'antiblur':
+        netG = model_antiblur
     else:
         netG = model_self_trained
 

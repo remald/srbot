@@ -14,4 +14,9 @@ def load_models(device='cpu'):
     net2.load_state_dict(dump['state_dict'])
     print(dump['iteration'])
 
-    return net1, net2
+    net3 = ESRGAN().to(device)
+    dump = torch.load("./weights/netG_4x_checkpoint.pth", map_location=device)
+    net3.load_state_dict(dump['state_dict'])
+    print(dump['iteration'])
+
+    return net1, net2, net3

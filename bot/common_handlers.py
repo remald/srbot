@@ -1,4 +1,3 @@
-
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, Message
 
 from bot.bot import dp, TR
@@ -9,9 +8,11 @@ from util.live_options import __LIVE_OPTIONS__
 async def send_welcome(message: Message):
     button_self_trained = KeyboardButton('/self_trained_esrgan')
     button_original = KeyboardButton('/original_esrgan')
+    button_antiblur = KeyboardButton('/antiblur_esrgan')
 
     greet_kb = ReplyKeyboardMarkup(resize_keyboard=True)
     greet_kb.add(button_self_trained)
+    greet_kb.add(button_antiblur)
     greet_kb.add(button_original)
     await message.reply(TR("start"),
                         reply_markup=greet_kb)
@@ -26,6 +27,12 @@ async def send_help(message: Message):
 async def select_self_trained_model(message: Message):
     __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'self')
     await message.reply(TR("self_selected"))
+
+
+@dp.message_handler(commands=['antiblur_esrgan'])
+async def select_self_trained_model(message: Message):
+    __LIVE_OPTIONS__.set_selected_model(message.from_user.id, 'antiblur')
+    await message.reply(TR("antiblur_selected"))
 
 
 @dp.message_handler(commands=['original_esrgan'])
