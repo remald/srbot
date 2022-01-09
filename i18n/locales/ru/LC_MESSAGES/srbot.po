@@ -41,7 +41,7 @@ msgid "self_selected"
 msgstr "Выбрана самостоятельно обученная модель!\n"
 
 msgid "face_selected"
-msgstr "Face enhance model is selected!\n"
+msgstr "Выбрана модель с функцией улучшения лиц!\n"
 
 msgid "wait_task"
 msgstr "<b><u>Ваша картинка обрабатывается.</u></b> Это может занять некоторое время, в зависимости от разрешения.\n"
